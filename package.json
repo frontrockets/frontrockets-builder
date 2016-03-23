@@ -1,0 +1,19 @@
+{
+  "name": "frontrockets-builder",
+  "version": "0.0.1",
+  "author": "Eugene Zhlobo @ezhlobo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/webpack --watch",
+    "build": "./node_modules/.bin/webpack -p"
+  },
+  "main": "builder.js",
+  "bin": "./bin/cli.js",
+  "dependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.12.14",
+    "yamljs": "^0.2.7"
+  }
+}
