@@ -32,7 +32,7 @@ var getEntriesRegExp = function(points, name) {
 };
 
 var entryPointCode = function(data, name) {
-  return 'var r=require.context("./../app/",!0,' + getEntriesRegExp(data, name) + ');r.keys().map(r);';
+  return 'var r=require.context("./../../app/",!0,' + getEntriesRegExp(data, name) + ');r.keys().map(r);';
 };
 
 var path = require('path');
@@ -42,13 +42,19 @@ function SetupEntryPoints(options) {};
 
 SetupEntryPoints.prototype.apply = function(compiler) {
   try {
-    fs.statSync('./.tmp');
+    fs.statSync('./tmp');
   } catch(e) {
-    fs.mkdirSync('./.tmp');
+    fs.mkdirSync('./tmp');
+  }
+
+  try {
+    fs.statSync('./tmp/entry_points');
+  } catch(e) {
+    fs.mkdirSync('./tmp/entry_points');
   }
 
   for (var entryName in compiler.options.entry) {
-    var filePath = './.tmp/' + entryName + '.js';
+    var filePath = './tmp/entry_points/' + entryName + '.js';
 
     fs.writeFileSync(filePath, entryPointCode(compiler.options.entry[entryName], entryName), 'utf-8');
 
