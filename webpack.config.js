@@ -14,6 +14,7 @@ var options = {
 
   outputCssFilename: '[name].css',
   outputJsFilename: '[name].js',
+  outputImageFilename: '[name].[ext]',
 };
 
 var localConfigPath = path.join(process.cwd(), 'frontrockets-builder.yml');
@@ -27,12 +28,21 @@ module.exports = {
   output: {
     path: options.outputPath,
     filename: options.outputJsFilename,
+    publicPath: '/assets/',
   },
   module: {
     loaders: [
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+      },
+      {
+        test: /\.png$/,
+        loader: path.join(__dirname, 'loader', 'assets-loader.js'),
+        query: {
+          limit: 1024,
+          name: options.outputImageFilename,
+        },
       },
     ],
   },
