@@ -23,6 +23,12 @@ try {
   options = Object.assign(options, YAML.load(localConfigPath));
 } catch(e) {}
 
+if (options.postcss && options.postcss.plugins) {
+  var postcssPlugins = options.postcss.plugins.map(function(name) {
+    return require(name);
+  });
+};
+
 module.exports = {
   entry: options.entry,
   output: {
@@ -34,7 +40,7 @@ module.exports = {
     loaders: [
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader'),
       },
       {
         test: /\.png$/,
@@ -45,6 +51,9 @@ module.exports = {
         },
       },
     ],
+  },
+  postcss: function() {
+    return postcssPlugins;
   },
   plugins: [
     new SetupEntryPoints(options.entry),
