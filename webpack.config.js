@@ -17,11 +17,11 @@ var options = {
   outputImageFilename: '[name].[ext]',
 };
 
-var localConfigPath = path.join(process.cwd(), 'frontrockets-builder.yml');
-
-if (!fs.accessSync(localConfigPath)) {
-  options = Object.assign(options, YAML.load(localConfigPath))
-}
+try {
+  var localConfigPath = path.join(process.cwd(), 'frontrockets-builder.yml');
+  fs.statSync(localConfigPath);
+  options = Object.assign(options, YAML.load(localConfigPath));
+} catch(e) {}
 
 module.exports = {
   entry: options.entry,
