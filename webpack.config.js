@@ -15,6 +15,7 @@ var options = {
   outputCssFilename: '[name].css',
   outputJsFilename: '[name].js',
   outputImageFilename: '[name].[ext]',
+  publicPrefixImage: '',
 };
 
 try {
@@ -55,6 +56,7 @@ module.exports = {
         query: {
           limit: 1024,
           name: options.outputImageFilename,
+          publicPrefix: options.publicPrefixImage,
         },
       },
     ],
