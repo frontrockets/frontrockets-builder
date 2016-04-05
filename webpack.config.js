@@ -40,18 +40,18 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.css$/,
+        test: /\.(css|scss|less)$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader'),
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel',
         query: {
           presets: ['es2015'],
         },
       },
       {
-        test: /\.png$/,
+        test: /\.(jpe?g|tiff|gif|bmp|png|webp)$/,
         loader: path.join(__dirname, 'loader', 'assets-loader.js'),
         query: {
           limit: 1024,
