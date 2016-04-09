@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs');
 
 var YAML = require('yamljs');
-var glob = require('node-glob');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var SetupEntryPoints = require('./loader/setup-entry-points.js');
