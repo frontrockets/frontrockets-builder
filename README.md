@@ -42,10 +42,8 @@ Follow 3 simple steps:
 ```yml
 entry:
   application:
-    assets:
-      javascripts: [.js]
-      stylesheets: [.css]
-    components: [.js, .css, .png]
+    stylesheets: app/assets/stylesheets/application.entry.css
+    javascripts: app/assets/javascripts/application.entry.js
 
 outputPath: ./vendor/assets
 
@@ -56,6 +54,7 @@ publicPrefixImage: components/
 
 postcss:
   plugins:
+    - precss
     - autoprefixer
 ```
 

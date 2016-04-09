@@ -2,6 +2,7 @@ var path = require('path');
 var fs = require('fs');
 
 var YAML = require('yamljs');
+var glob = require('node-glob');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var SetupEntryPoints = require('./loader/setup-entry-points.js');
@@ -23,12 +24,6 @@ try {
   fs.statSync(localConfigPath);
   options = Object.assign(options, YAML.load(localConfigPath));
 } catch(e) {}
-
-if (options.postcss && options.postcss.plugins) {
-  var postcssPlugins = options.postcss.plugins.map(function(name) {
-    return require(name);
-  });
-};
 
 module.exports = {
   entry: options.entry,
@@ -61,7 +56,19 @@ module.exports = {
       },
     ],
   },
-  postcss: function() {
+  postcss: function(webpack) {
+    var postcssPlugins = [require('postcss-easy-import')({
+      glob: true,
+      extensions: ['.css', '.scss', '.less'],
+      addDependencyTo: webpack,
+    })];
+
+    if (options.postcss && options.postcss.plugins) {
+      postcssPlugins = postcssPlugins.concat(options.postcss.plugins.map(function(name) {
+        return require(name);
+      }));
+    };
+
     return postcssPlugins;
   },
   plugins: [
