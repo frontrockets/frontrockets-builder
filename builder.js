@@ -8,10 +8,10 @@ var builder = {
 
 var executeCommand = function(command, argv) {
   var command = cp.spawn(command, argv, {
-    env: (function(argv) {
-      if (argv.length) {
+    env: (function(builderArgv) {
+      if (builderArgv.length) {
         return Object.assign({}, process.env, {
-          __FRONTROCKETS_CONFIG_PATH: argv[0],
+          __FRONTROCKETS_CONFIG_PATH: builderArgv[0],
         });
       } else {
         return process.env;
@@ -28,7 +28,7 @@ var executeCommand = function(command, argv) {
   });
 };
 
-var executeWebpackCommand = function(argv, rootArgv) {
+var executeWebpackCommand = function(argv) {
   return executeCommand(path.join(process.cwd(), "node_modules", ".bin", "webpack"), argv);
 };
 

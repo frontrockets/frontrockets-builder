@@ -5,7 +5,7 @@ var argv = process.argv;
 
 argv.splice(0, 2);
 
-builder.arguments = argv
+builder.arguments = argv;
 
 switch(argv[0]) {
   case "build":
