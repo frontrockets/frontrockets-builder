@@ -20,11 +20,15 @@ var options = {
   babel_presets: [],
 };
 
-try {
-  var localConfigPath = path.resolve(process.cwd(), process.env.__FRONTROCKETS_CONFIG_PATH || '');
-  fs.statSync(localConfigPath);
-  options = Object.assign(options, YAML.load(localConfigPath));
-} catch(e) {}
+(function() {
+  try {
+    var localConfigPath = path.resolve(process.cwd(), process.env.__FRONTROCKETS_CONFIG_PATH || '');
+
+    fs.statSync(localConfigPath);
+
+    options = Object.assign(options, YAML.load(localConfigPath));
+  } catch(e) {}
+})();
 
 module.exports = {
   entry: options.entry,
