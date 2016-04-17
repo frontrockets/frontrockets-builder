@@ -16,6 +16,8 @@ var options = {
   outputJsFilename: '[name].js',
   outputImageFilename: '[name].[ext]',
   publicPrefixImage: '',
+
+  babel_presets: [],
 };
 
 try {
@@ -41,7 +43,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         loader: 'babel',
         query: {
-          presets: ['es2015'],
+          presets: options.babel_presets,
         },
       },
       {
