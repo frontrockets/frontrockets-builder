@@ -58,10 +58,12 @@ module.exports = {
           name: options.outputImageFilename,
           publicPrefix: options.publicPrefixImage,
         },
+        exclude: /node_modules/,
       },
       {
         test: /\.(css|scss|less)$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader'),
+        exclude: /node_modules/,
       },
       {
         test: /\.(js|jsx)$/,
@@ -69,8 +71,10 @@ module.exports = {
         query: {
           presets: options.babel_presets,
         },
+        exclude: /node_modules/,
       },
     ],
+    noParse: /frontrockets/,
   },
   postcss: function(webpack) {
     var postcssPlugins = [require('postcss-easy-import')({
