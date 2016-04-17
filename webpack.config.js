@@ -30,6 +30,17 @@ var options = {
   } catch(e) {}
 })();
 
+var webpackPlugins = [
+  new SetupEntryPoints(options.entry),
+  new ExtractTextPlugin(options.outputCssFilename, {
+    allChunks: true,
+  }),
+];
+
+if (process.env.NODE_ENV === 'production') {
+  webpackPlugins.push(new webpack.optimize.DedupePlugin());
+}
+
 module.exports = {
   entry: options.entry,
   output: {
@@ -76,10 +87,5 @@ module.exports = {
 
     return postcssPlugins;
   },
-  plugins: [
-    new SetupEntryPoints(options.entry),
-    new ExtractTextPlugin(options.outputCssFilename, {
-      allChunks: true,
-    }),
-  ],
+  plugins: webpackPlugins,
 }
