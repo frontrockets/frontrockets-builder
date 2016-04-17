@@ -1,10 +1,23 @@
 var cp = require('child_process');
 var path = require('path');
 
-var builder = {};
+var builder = {
+  // It will be filled by bin/cli.js
+  arguments: [],
+};
 
 var executeCommand = function(command, argv) {
-  var command = cp.spawn(command, argv);
+  var command = cp.spawn(command, argv, {
+    env: (function(argv) {
+      if (argv.length) {
+        return Object.assign({}, process.env, {
+          __FRONTROCKETS_CONFIG_PATH: argv[0],
+        });
+      } else {
+        return process.env;
+      }
+    })(builder.arguments),
+  });
 
   command.stdout.on('data', function(message) {
     process.stdin.write(message);
@@ -15,7 +28,7 @@ var executeCommand = function(command, argv) {
   });
 };
 
-var executeWebpackCommand = function(argv) {
+var executeWebpackCommand = function(argv, rootArgv) {
   return executeCommand(path.join(process.cwd(), "node_modules", ".bin", "webpack"), argv);
 };
 

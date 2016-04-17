@@ -2,11 +2,6 @@
   "name": "frontrockets-builder",
   "version": "0.2.1",
   "author": "Eugene Zhlobo @ezhlobo",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/.bin/webpack --watch",
-    "build": "./node_modules/.bin/webpack -p"
-  },
   "main": "builder.js",
   "bin": "./bin/cli.js",
   "dependencies": {

@@ -21,7 +21,7 @@ var options = {
 };
 
 try {
-  var localConfigPath = path.join(process.cwd(), 'frontrockets-builder.yml');
+  var localConfigPath = path.resolve(process.cwd(), process.env.__FRONTROCKETS_CONFIG_PATH || '');
   fs.statSync(localConfigPath);
   options = Object.assign(options, YAML.load(localConfigPath));
 } catch(e) {}
