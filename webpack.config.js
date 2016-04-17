@@ -39,6 +39,14 @@ var webpackPlugins = [
 
 if (process.env.NODE_ENV === 'production') {
   webpackPlugins.push(new webpack.optimize.DedupePlugin());
+  webpackPlugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+    },
+    sourceMap: false,
+    test: /\.js$/,
+    exclude: /node_modules/,
+  }));
 }
 
 module.exports = {

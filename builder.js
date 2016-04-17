@@ -9,13 +9,20 @@ var builder = {
 var executeCommand = function(command, argv) {
   var command = cp.spawn(command, argv, {
     env: (function(builderArgv) {
+      var env = process.env;
+
       if (builderArgv.length) {
-        return Object.assign({}, process.env, {
+        Object.assign(env, {
           __FRONTROCKETS_CONFIG_PATH: builderArgv[0],
         });
-      } else {
-        return process.env;
       }
+
+      if (argv.indexOf('-p') > -1) {
+        argv.splice(argv.indexOf('-p'), 1);
+        env.NODE_ENV = 'production';
+      }
+
+      return env;
     })(builder.arguments),
   });
 
