@@ -17,13 +17,13 @@ npm install frontrockets-builder --save
 Build your assets on the fly:
 
 ```
-./node_modules/.bin/frontrockets-builder [start]
+./node_modules/.bin/frontrockets-builder [start] [path/to/frontrockets-builder.yml]
 ```
 
 Or build for production:
 
 ```
-./node_modules/.bin/frontrockets-builder build
+./node_modules/.bin/frontrockets-builder build [path/to/frontrockets-builder.yml]
 ```
 
 ## Setup
