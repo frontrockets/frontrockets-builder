@@ -40,6 +40,15 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.(jpe?g|tiff|gif|bmp|png|webp)$/,
+        loader: path.join(__dirname, 'loader', 'assets-loader.js'),
+        query: {
+          limit: 1024,
+          name: options.outputImageFilename,
+          publicPrefix: options.publicPrefixImage,
+        },
+      },
+      {
         test: /\.(css|scss|less)$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader'),
       },
@@ -48,15 +57,6 @@ module.exports = {
         loader: 'babel',
         query: {
           presets: options.babel_presets,
-        },
-      },
-      {
-        test: /\.(jpe?g|tiff|gif|bmp|png|webp)$/,
-        loader: path.join(__dirname, 'loader', 'assets-loader.js'),
-        query: {
-          limit: 1024,
-          name: options.outputImageFilename,
-          publicPrefix: options.publicPrefixImage,
         },
       },
     ],
