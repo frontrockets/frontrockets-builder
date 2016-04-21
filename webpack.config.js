@@ -89,8 +89,8 @@ module.exports = {
       addDependencyTo: webpack,
     })];
 
-    if (options.postcss && options.postcss.plugins) {
-      postcssPlugins = postcssPlugins.concat(options.postcss.plugins.map(function(name) {
+    if (options.postcss_plugins) {
+      postcssPlugins = postcssPlugins.concat(options.postcss_plugins.map(function(name) {
         return require(name);
       }));
     };
