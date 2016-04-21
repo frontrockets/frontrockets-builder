@@ -1,58 +1,44 @@
-var cp = require('child_process');
 var path = require('path');
+
+var webpack = require('webpack');
 
 var builder = {
   // It will be filled by bin/cli.js
   arguments: [],
 };
 
-var executeCommand = function(command, argv) {
-  var command = cp.spawn(command, argv, {
-    env: (function(builderArgv) {
-      var env = process.env;
+var loadConfig = function(environment) {
+  process.env.NODE_ENV = process.env.NODE_ENV || environment;
+  process.env.FRONTROCKETS_CONFIG_PATH = builder.arguments[0];
 
-      if (builderArgv.length) {
-        Object.assign(env, {
-          __FRONTROCKETS_CONFIG_PATH: builderArgv[0],
-        });
-      }
-
-      if (argv.indexOf('-p') > -1) {
-        argv.splice(argv.indexOf('-p'), 1);
-        env.NODE_ENV = 'production';
-      }
-
-      return env;
-    })(builder.arguments),
-  });
-
-  command.stdout.on('data', function(message) {
-    process.stdin.write(message);
-  });
-
-  command.stderr.on('data', function(message) {
-    process.stderr.write(message);
-  });
+  return require(path.resolve(__dirname, 'webpack.config.js'));
 };
-
-var executeWebpackCommand = function(argv) {
-  return executeCommand(path.join(process.cwd(), "node_modules", ".bin", "webpack"), argv);
-};
-
-var pathToWebpackConfig = path.join(path.resolve(__dirname), "webpack.config.js")
 
 builder.watch = function() {
   process.stdout.write("Start, sir!\n");
-  return executeWebpackCommand([
-    "--watch", "--colors", "--config", pathToWebpackConfig
-  ]);
+  webpack(loadConfig('development')).watch({}, callback({
+    colors: true,
+  }));
 };
 
 builder.build = function() {
   process.stdout.write("Okay...\n");
-  return executeWebpackCommand([
-    "-p", "--colors", "--config", pathToWebpackConfig
-  ]);
+  webpack(loadConfig('production')).run(callback())
 };
 
 module.exports = builder;
+
+function callback(options) {
+  var data = Object.assign({}, {
+    version: false,
+    chunks: false,
+  }, options || {});
+
+  return function(err, stats) {
+    if (err) {
+      return console.log(err);
+    }
+
+    console.log("\n", stats.toString(data));
+  };
+}

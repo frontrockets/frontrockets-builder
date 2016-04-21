@@ -22,7 +22,7 @@ var options = {
 
 (function() {
   try {
-    var localConfigPath = path.resolve(process.cwd(), process.env.__FRONTROCKETS_CONFIG_PATH || '');
+    var localConfigPath = path.resolve(process.cwd(), process.env.FRONTROCKETS_CONFIG_PATH || '');
 
     fs.statSync(localConfigPath);
 
