@@ -1,23 +1,10 @@
 var path = require('path');
 var fs = require('fs');
-
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var SetupEntryPoints = require('./loader/setup-entry-points.js');
 
-var options = {
-  entry: {
-    application: './tests/application.entry.js',
-  },
-  outputPath: path.resolve('.', 'tests', 'build'),
-
-  outputCssFilename: '[name].css',
-  outputJsFilename: '[name].js',
-  outputImageFilename: '[name].[ext]',
-  publicPrefixImage: '',
-
-  babel_presets: [],
-};
+var options = require('./options');
 
 if (process.env.FRONTROCKETS_CONFIG_PATH) {
   var localConfigPath = path.resolve(process.cwd(), process.env.FRONTROCKETS_CONFIG_PATH || '');
@@ -26,25 +13,6 @@ if (process.env.FRONTROCKETS_CONFIG_PATH) {
   if (typeof userOptions === 'object') {
     options = Object.assign(options, userOptions);
   }
-}
-
-var webpackPlugins = [
-  new SetupEntryPoints(options.entry),
-  new ExtractTextPlugin(options.outputCssFilename, {
-    allChunks: true,
-  }),
-];
-
-if (process.env.NODE_ENV === 'production') {
-  webpackPlugins.push(new webpack.optimize.DedupePlugin());
-  webpackPlugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false,
-    },
-    sourceMap: false,
-    test: /\.js$/,
-    exclude: /node_modules/,
-  }));
 }
 
 module.exports = {
@@ -97,5 +65,28 @@ module.exports = {
 
     return postcssPlugins;
   },
-  plugins: webpackPlugins,
-}
+  plugins: webpackPlugins(),
+};
+
+var webpackPlugins = function() {
+  var plugins = [
+    new SetupEntryPoints(options.entry),
+    new ExtractTextPlugin(options.outputCssFilename, {
+      allChunks: true,
+    }),
+  ];
+
+  if (process.env.NODE_ENV === 'production') {
+    plugins.push(new webpack.optimize.DedupePlugin());
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      sourceMap: false,
+      test: /\.js$/,
+      exclude: /node_modules/,
+    }));
+  }
+
+  return plugins;
+};

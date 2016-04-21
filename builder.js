@@ -1,35 +1,31 @@
 var path = require('path');
-
 var webpack = require('webpack');
 
-var builder = {
-  // It will be filled by bin/cli.js
-  arguments: [],
-};
+builder.watch = function(configPath) {
+  var config = loadConfig('development', configPath);
 
-var loadConfig = function(environment) {
-  process.env.NODE_ENV = process.env.NODE_ENV || environment;
-
-  if (builder.arguments[0]) {
-    process.env.FRONTROCKETS_CONFIG_PATH = builder.arguments[0];
-  }
-
-  return require(path.resolve(__dirname, 'webpack.config.js'));
-};
-
-builder.watch = function() {
   process.stdout.write("Start, sir!\n");
-  webpack(loadConfig('development')).watch({}, callback({
+  webpack(config).watch({}, callback({
     colors: true,
   }));
 };
 
-builder.build = function() {
+builder.build = function(configPath) {
+  var config = loadConfig('production', configPath)
+
   process.stdout.write("Okay...\n");
-  webpack(loadConfig('production')).run(callback())
+  webpack(config).run(callback())
 };
 
-module.exports = builder;
+function loadConfig(environment, configPath) {
+  process.env.NODE_ENV = process.env.NODE_ENV || environment;
+
+  if (configPath) {
+    process.env.FRONTROCKETS_CONFIG_PATH = configPath;
+  }
+
+  return require(path.resolve(__dirname, 'webpack.config.js'));
+};
 
 function callback(options) {
   var data = Object.assign({}, {
@@ -45,3 +41,5 @@ function callback(options) {
     console.log("\n", stats.toString(data));
   };
 }
+
+module.exports = builder;

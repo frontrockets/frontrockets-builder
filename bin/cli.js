@@ -5,17 +5,15 @@ var argv = process.argv;
 
 argv.splice(0, 2);
 
-builder.arguments = argv;
-
 switch(argv[0]) {
   case "build":
     argv.splice(0, 1);
-    builder.build();
+    builder.build(argv[0]);
     break;
 
   case "start":
     argv.splice(0, 1);
-    builder.watch();
+    builder.watch(argv[0]);
     break;
 
   default:
