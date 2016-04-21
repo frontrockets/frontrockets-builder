@@ -1,6 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var callbacks = {
+  configReady: [],
+};
+
 module.exports = {
   watch: function(optionsPath) {
     return loadWebpack('development', optionsPath, "Start, sir!\n").watch({}, callback);
@@ -8,13 +12,26 @@ module.exports = {
 
   build: function(optionsPath) {
     return loadWebpack('production', optionsPath, "Okay...\n").run(callback);
+  },
+
+  onConfigReady: function(callback) {
+    var string = toString.call(callback);
+    if (string === '[object Function]' || (typeof callback === 'function' && string !== '[object RegExp]')) {
+      callbacks.configReady.push(callback);
+    }
   }
 };
 
 function loadWebpack(environment, optionsPath, message) {
   process.stdout.write(message);
 
-  return webpack(loadConfig(environment, optionsPath));
+  var config = loadConfig(environment, optionsPath);
+
+  callbacks.configReady.forEach(function(callback) {
+    config = callback(config);
+  });
+
+  return webpack(config);
 };
 
 function loadConfig(environment, optionsPath) {
