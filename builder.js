@@ -9,7 +9,10 @@ var builder = {
 
 var loadConfig = function(environment) {
   process.env.NODE_ENV = process.env.NODE_ENV || environment;
-  process.env.FRONTROCKETS_CONFIG_PATH = builder.arguments[0];
+
+  if (builder.arguments[0]) {
+    process.env.FRONTROCKETS_CONFIG_PATH = builder.arguments[0];
+  }
 
   return require(path.resolve(__dirname, 'webpack.config.js'));
 };

@@ -1,7 +1,6 @@
 var path = require('path');
 var fs = require('fs');
 
-var YAML = require('yamljs');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var SetupEntryPoints = require('./loader/setup-entry-points.js');
@@ -20,15 +19,14 @@ var options = {
   babel_presets: [],
 };
 
-(function() {
-  try {
-    var localConfigPath = path.resolve(process.cwd(), process.env.FRONTROCKETS_CONFIG_PATH || '');
+if (process.env.FRONTROCKETS_CONFIG_PATH) {
+  var localConfigPath = path.resolve(process.cwd(), process.env.FRONTROCKETS_CONFIG_PATH || '');
+  var userOptions = require(localConfigPath);
 
-    fs.statSync(localConfigPath);
-
-    options = Object.assign(options, YAML.load(localConfigPath));
-  } catch(e) {}
-})();
+  if (typeof userOptions === 'object') {
+    options = Object.assign(options, userOptions);
+  }
+}
 
 var webpackPlugins = [
   new SetupEntryPoints(options.entry),
