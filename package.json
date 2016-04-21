@@ -2,7 +2,7 @@
   "name": "frontrockets-builder",
   "version": "0.3.0",
   "author": "Eugene Zhlobo @ezhlobo",
-  "main": "builder.js",
+  "main": "./index.js",
   "bin": "./bin/cli.js",
   "dependencies": {
     "babel-core": "^6.7.4",

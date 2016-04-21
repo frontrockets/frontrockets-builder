@@ -2,9 +2,21 @@ var path = require('path');
 var fs = require('fs');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var SetupEntryPoints = require('./loader/setup-entry-points.js');
+var SetupEntryPoints = require('./lib/setup-entry-points-plugin.js');
 
-var options = require('./options');
+var options = {
+  entry: {
+    application: './tests/application.entry.js',
+  },
+  outputPath: './tests/build',
+
+  outputCssFilename: '[name].css',
+  outputJsFilename: '[name].js',
+  outputImageFilename: '[name].[ext]',
+  publicPrefixImage: '',
+
+  babel_presets: [],
+};
 
 if (process.env.FRONTROCKETS_CONFIG_PATH) {
   var localConfigPath = path.resolve(process.cwd(), process.env.FRONTROCKETS_CONFIG_PATH || '');
@@ -26,7 +38,7 @@ module.exports = {
     loaders: [
       {
         test: /\.(jpe?g|tiff|gif|bmp|png|webp)$/,
-        loader: path.join(__dirname, 'loader', 'assets-loader.js'),
+        loader: path.join(__dirname, 'lib', 'assets-loader.js'),
         query: {
           limit: 1024,
           name: options.outputImageFilename,
@@ -68,7 +80,7 @@ module.exports = {
   plugins: webpackPlugins(),
 };
 
-var webpackPlugins = function() {
+function webpackPlugins() {
   var plugins = [
     new SetupEntryPoints(options.entry),
     new ExtractTextPlugin(options.outputCssFilename, {
