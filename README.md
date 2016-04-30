@@ -42,23 +42,27 @@ Follow 3 simple steps:
 ```js
 var options = {
   entry: {
+    // Custom:
     application: {
       javascripts: 'app/assets/javascripts/application.entry.js'
     }
   },
 
-  outputPath: './vendor/assets',
-  outputCssFilename: 'stylesheets/dist/[name].css',
-  outputJsFilename: 'javascripts/dist/[name].js',
-  outputImageFilename: 'images/components/[name]-[sha512:hash:hex:6].[ext]',
-  publicPrefixImage: 'components/',
+  output: {
+    path: './vendor/assets',
+
+    // Custom:
+    filenameCss: 'stylesheets/dist/[name].css',
+    filenameJs: 'javascripts/dist/[name].js',
+    filenameImage: 'images/components/[name]-[sha512:hash:hex:6].[ext]',
+    dirForImageRelativeToOutputPath: 'components/' // Hackish
+  },
 
   babel_presets: ['es2015'],
   postcss_plugins: ['precss', 'autoprefixer']
 };
 
 module.exports = require('frontrockets-builder')(options);
-
 ```
 
 Install dependencies:

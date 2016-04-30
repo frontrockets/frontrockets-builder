@@ -7,8 +7,8 @@ module.exports = function(options) {
   return {
     entry: options.entry,
     output: {
-      path: options.outputPath,
-      filename: options.outputJsFilename,
+      path: options.output.path,
+      filename: options.output.filenameJs,
       publicPath: '/assets/',
     },
     module: {
@@ -18,8 +18,8 @@ module.exports = function(options) {
           loader: path.join(__dirname, 'lib', 'assets-loader.js'),
           query: {
             limit: 1024,
-            name: options.outputImageFilename,
-            publicPrefix: options.publicPrefixImage,
+            name: options.output.filenameImage,
+            publicPrefix: options.dirForImageRelativeToOutputPath,
           },
           exclude: /node_modules/,
         },
@@ -56,8 +56,8 @@ module.exports = function(options) {
     },
     plugins: (function() {
       var plugins = [
-        new SetupEntryPoints(options.entry),
-        new ExtractTextPlugin(options.outputCssFilename, {
+        new SetupEntryPoints(),
+        new ExtractTextPlugin(options.output.filenameCss, {
           allChunks: true,
         }),
       ];
