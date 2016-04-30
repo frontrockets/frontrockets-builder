@@ -40,19 +40,17 @@ module.exports = function(options) {
       noParse: /frontrockets/,
     },
     postcss: function(webpack) {
-      var postcssPlugins = [require('postcss-easy-import')({
-        glob: true,
-        extensions: ['.css', '.scss', '.less'],
-        addDependencyTo: webpack,
-      })];
+      var plugins = options.postcss.apply(this, arguments);
 
-      if (options.postcss_plugins) {
-        postcssPlugins = postcssPlugins.concat(options.postcss_plugins.map(function(name) {
-          return require(name);
-        }));
-      };
+      var corePlugins = [
+        require('postcss-easy-import')({
+          glob: true,
+          extensions: ['.css', '.scss', '.less'],
+          addDependencyTo: webpack
+        })
+      ];
 
-      return postcssPlugins;
+      return corePlugins.concat(plugins);
     },
     plugins: (function() {
       var plugins = [

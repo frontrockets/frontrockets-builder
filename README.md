@@ -44,7 +44,8 @@ var options = {
   entry: {
     // Custom:
     application: {
-      javascripts: 'app/assets/javascripts/application.entry.js'
+      javascripts: 'app/assets/javascripts/application.entry.js',
+      stylesheets: 'app/assets/stylesheets/application.entry.css'
     }
   },
 
@@ -58,8 +59,15 @@ var options = {
     dirForImageRelativeToOutputPath: 'components/' // Hackish
   },
 
-  babel_presets: ['es2015'],
-  postcss_plugins: ['precss', 'autoprefixer']
+  // Patched:
+  postcss: function(webpack) {
+    return [
+      require('precss'),
+      require('autoprefixer')
+    ];
+  },
+
+  babel_presets: ['es2015']
 };
 
 module.exports = require('frontrockets-builder')(options);
