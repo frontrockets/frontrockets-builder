@@ -32,7 +32,7 @@ module.exports = function(options) {
           test: /\.(js|jsx)$/,
           loader: 'babel',
           query: {
-            presets: options.babel_presets,
+            presets: options.babelPresets,
           },
           exclude: /node_modules/,
         },

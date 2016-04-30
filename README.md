@@ -67,7 +67,8 @@ var options = {
     ];
   },
 
-  babel_presets: ['es2015']
+  // Custom:
+  babelPresets: ['es2015']
 };
 
 module.exports = require('frontrockets-builder')(options);
