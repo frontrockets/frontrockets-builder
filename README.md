@@ -17,13 +17,13 @@ npm install frontrockets-builder --save
 Build your assets on the fly:
 
 ```
-./node_modules/.bin/frontrockets-builder [start] [path/to/frontrockets-builder.yml]
+./node_modules/.bin/webpack -w [--config config/assets_builder.js]
 ```
 
 Or build for production:
 
 ```
-./node_modules/.bin/frontrockets-builder build [path/to/frontrockets-builder.yml]
+NODE_ENV=production ./node_modules/.bin/webpack [--config config/assets_builder.js]
 ```
 
 ## Setup
@@ -34,33 +34,36 @@ Coming soon...
 
 Follow 3 simple steps:
 
-* Add `frontrockets-builder.yml` in the root path.
+* Add `frontrockets-builder.js` in the root path.
 * Install dependencies.
 * Update `.gitignore` to exclude bundles.
 
-`frontrockets-builder.yml`:
-```yml
-entry:
-  application:
-    stylesheets: app/assets/stylesheets/application.entry.css
-    javascripts: app/assets/javascripts/application.entry.js
+`frontrockets-builder.js`:
+```js
+var options = {
+  entry: {
+    application: {
+      javascripts: 'app/assets/javascripts/application.entry.js'
+    }
+  },
 
-outputPath: ./vendor/assets
+  outputPath: './vendor/assets',
+  outputCssFilename: 'stylesheets/dist/[name].css',
+  outputJsFilename: 'javascripts/dist/[name].js',
+  outputImageFilename: 'images/components/[name]-[sha512:hash:hex:6].[ext]',
+  publicPrefixImage: 'components/',
 
-outputCssFilename: stylesheets/dist/[name].css
-outputJsFilename: javascripts/dist/[name].js
-outputImageFilename: images/components/[name]-[sha512:hash:hex:6].[ext]
-publicPrefixImage: components/
+  babel_presets: ['es2015'],
+  postcss_plugins: ['precss', 'autoprefixer']
+};
 
-postcss:
-  plugins:
-    - precss
-    - autoprefixer
+module.exports = require('frontrockets-builder')(options);
+
 ```
 
 Install dependencies:
 ```
-npm install autoprefixer --save
+npm install autoprefixer babel-preset-es2015 --save
 ```
 
 Update gitignore by adding builder's bundles:
