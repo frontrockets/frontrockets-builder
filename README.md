@@ -1,6 +1,6 @@
 # Frontrockets-builder
 
-Configurable builder on webpack. Integrates well with Ruby on Rails applications.
+Convinient config for webpack. Familiar with Ruby on Rails applications.
 
 Setup paths and PostCSS plugins for each project.
 
