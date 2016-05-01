@@ -1,11 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var SetupEntryPoints = require('./lib/setup-entry-points-plugin.js');
+var SetupEntryPoints = require('./lib/setup-entry-points');
 
 module.exports = function(options) {
   return {
-    entry: options.entry,
+    entry: new SetupEntryPoints(options.entry),
     output: {
       path: options.output.path,
       filename: options.output.filenameJs,
@@ -54,7 +54,6 @@ module.exports = function(options) {
     },
     plugins: (function() {
       var plugins = [
-        new SetupEntryPoints(),
         new ExtractTextPlugin(options.output.filenameCss, {
           allChunks: true,
         }),
