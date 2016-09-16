@@ -39,19 +39,6 @@ module.exports = function(options) {
       ],
       noParse: /frontrockets/,
     },
-    postcss: function(webpack) {
-      var plugins = options.postcss.apply(this, arguments);
-
-      var corePlugins = [
-        require('postcss-easy-import')({
-          glob: true,
-          extensions: ['.css', '.scss', '.less'],
-          addDependencyTo: webpack
-        })
-      ];
-
-      return corePlugins.concat(plugins);
-    },
     plugins: (function() {
       var plugins = [
         new ExtractTextPlugin(options.output.filenameCss, {
